@@ -108,39 +108,4 @@ app.post('/webhook/whatsapp', async (req, res) => {
 });
 
 app.get('/', (_, res) => res.send('OK'));
-app.listen(PORT, () => console.log('✅ Server live on', PORT));const intents=[
-  {key:'greet',test:/hi|hello|namaste|salaam|hey/i},
-  {key:'pcod',test:/pcod|pcos/i},
-  {key:'liver',test:/liver|fatty|acidity/i},
-  {key:'fat',test:/fat\\s*cleanser|metabolism|inch/i},
-  {key:'wasago',test:/wasa\\s*go|obese|motapa|weight/i},
-  {key:'buy',test:/buy|order|cod|upi/i}
-];
-
-const replies={
-  greet:'Namaste! 👋 Main Dr. Maaz team ka AI assistant hoon. Kaunsa product chahiye — PCOD Cleanser, Liver Detox, Fat Cleanser ya WasaGo?',
-  pcod:`✨ *PCOD Cleanser* hormonal balance ke liye.\nMRP ₹${PRICE_MRP} — Offer ₹${PRICE_SALE}`,
-  liver:`🌿 *Liver Detox* fatty liver & acidity me support karta hai.\nMRP ₹${PRICE_MRP} — Offer ₹${PRICE_SALE}`,
-  fat:`🔥 *Fat Cleanser* metabolism improve karta hai.\nMRP ₹${PRICE_MRP} — Offer ₹${PRICE_SALE}`,
-  wasago:`🏃 *WasaGo* (Ayurveda + Unani) weight loss formula.\nMRP ₹${PRICE_MRP} — Offer ₹${PRICE_SALE}`,
-  buy:'Order confirm karu? COD ya UPI? Address bhej dijiye — dispatch aaj hi ho jayega 😊',
-  fallback:'Kya aap product chahte ho (PCOD, Liver, Fat, WasaGo) ya patient-wise suggestion?'
-};
-
-app.get('/webhook/whatsapp',(req,res)=>{
-  const{ 'hub.mode':m,'hub.verify_token':t,'hub.challenge':c}=req.query;
-  if(m==='subscribe'&&t===VERIFY)return res.status(200).send(c);
-  res.sendStatus(403);
-});
-
-app.post('/webhook/whatsapp',async(req,res)=>{
-  const msg=req.body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
-  if(!msg)return res.sendStatus(200);
-  const from=msg.from;
-  const text=(msg.text?.body||'').trim();
-  const intent=intents.find(i=>i.test.test(text))?.key||'fallback';
-  await sendWA(from,replies[intent]||replies.fallback);
-  res.sendStatus(200);
-});
-
-app.listen(PORT,()=>console.log('✅ Ayurveda Bot live on',PORT));
+app.listen(PORT, () => console.log('✅ Server live on', PORT));
